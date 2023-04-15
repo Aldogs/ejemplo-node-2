@@ -1,0 +1,67 @@
+<% let encabezado={ autores: [ ["Aldo Iván García Salman", 'salman@ciencias.unam.mx' ] ],
+    descripcion: 'Barra de busqueda - pagina principal' , fechaCreacion: '10/04/23' ,
+    palabrasClave: 'index,portal,ejemplo,node.js,express,ejs' , jquery: true } %>
+    <%- include('comunes/encabezado_html', {datos: encabezado}) %>
+        <title>Biblioteca</title>
+        </head>
+
+        <body>
+            <h1>Biblioteca</h1>
+
+
+            <div class="input-group">
+                <div class="form-outline">
+                    <input type="search" id="form1" class="form-control" />
+                    <label class="form-label" for="form1">Buscar Libro</label>
+                </div>
+                <button type="button" class="btn btn-primary">
+                    <i class="fas fa-search"></i>
+                </button>
+                <a class="btn btn-primary" id="registraLibro" href="http://localhost:8000/registro"
+                    role="button">Registrar Libro</a>
+            </div>
+
+
+    <!-- The form -->
+    <form class="example">
+        <input class="form-control" id="textToSearch" type="text" placeholder="Buscar libro" name="search">
+        
+    </form>
+    <button id="buscarLibro"><i class="fa fa-search"></i></button>
+
+
+
+    <table id="tabla">
+        <thead>
+
+            <tr>
+              <th>Título</th>
+              <th>Autor(es)</th>
+              <th>Editorial</th>
+              <th>Fecha</th>
+              <th>Ver más</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        </tbody>
+      </table>
+
+            <script>
+                $("#buscarLibro").click(function () {
+                    $("#tabla tbody").children().remove();
+                    var text = $("#textToSearch").val()
+                    console.log(text)
+                    $.get("http://localhost:8000/libros?text=" + text, function (data, status) {
+                        console.log("Data: " + JSON.stringify(data) + "\nStatus: " + status);
+                        data.forEach(element => {
+
+                            var row = `<tr><td>${element.titulo}</td><td>${element.autor}</td><td>${element.editorial}</td><td>${element.fecha}</td></tr>`
+                            $('#tabla tbody').append(row)
+                        });
+                    });
+                }); 
+            </script>
+        </body>
+
+        </html>
